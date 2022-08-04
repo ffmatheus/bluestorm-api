@@ -1,11 +1,11 @@
-from routers import patients, pharmacies, transactions, users
-from init import app
-import uvicorn
+from api.routers.patients import router as UsersRouter
+from api.routers.users import router as PatientsRouter
+from api.routers.pharmacies import router as PharmaciesRouter
+from api.routers.transactions import router as TransactionsRouter
+from api.init import app
 
-app.include_router(users.router)
-app.include_router(patients.router)
-app.include_router(pharmacies.router)
-app.include_router(transactions.router)
 
-if __name__ == '__main__':
-    uvicorn.run(app, host="localhost", port=8000)
+app.include_router(UsersRouter)
+app.include_router(PatientsRouter)
+app.include_router(PharmaciesRouter)
+app.include_router(TransactionsRouter)
