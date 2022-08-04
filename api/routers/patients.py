@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
-from api.auth import AuthHandler
+from auth import AuthHandler
 from sqlmodel import Session
 from sqlalchemy import desc
-from api.schemas.patients import PatientSchema, PatientUpdateSchema
-from api.start import app
-from api.models.Patient import Patient
-from api.database import get_db
+from schemas.patients import PatientSchema, PatientUpdateSchema
+from start import app
+from models.Patient import Patient
+from database import get_db
 
 router = APIRouter()
 auth_handler = AuthHandler()

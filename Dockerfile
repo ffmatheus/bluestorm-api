@@ -11,6 +11,6 @@ RUN pip install -r requirements.txt
 
 RUN apt-get remove build-essential -y
 
-COPY ./api /code/api/
+COPY ./api /code/
 
 EXPOSE 8000

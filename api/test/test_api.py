@@ -1,7 +1,7 @@
 from fastapi.testclient import TestClient
 from sqlalchemy import text, orm
 from sqlmodel import MetaData, Table
-from init import app
+from main import app
 from database import engine
 
 
@@ -27,12 +27,22 @@ class TestDB:
         assert len(results) > 20
 
 
-class TestApiGet():
+class TestApiGet:
 
+    def test_login(self):
+        
+        
+        response = app.post(
+            "/login",
+            data = {
+            "USERNAME": "matheus",
+            "PASSWORD": "teste"
+        })
+        assert response.status_code == 200
 
     def test_read_all_patients(self):
         
-        response = client.get("patients")
+        response = client.get("/patients")
         print(response.json())
         assert response.status_code == 200
         assert len(response) > 20
