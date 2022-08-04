@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from schemas.transactions import TransactionsSchema
+from auth import AuthHandler
 from init import app
 from sqlmodel import Session
 from sqlalchemy import desc
@@ -9,12 +10,14 @@ from models.Patient import Patient
 from models.Pharmacy import Pharmacy
 
 router = APIRouter()
+auth_handler = AuthHandler()
 
 
 @app.get(
     "/transactions",
     tags=["Transactions"])
 def get_transactions(
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Return all transactions
@@ -46,6 +49,7 @@ def get_transactions(
     tags=["Transactions"])
 def create_transaction(
     transaction: TransactionsSchema,
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Create a transaction

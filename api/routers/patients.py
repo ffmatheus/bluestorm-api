@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
+from auth import AuthHandler
 from sqlmodel import Session
 from sqlalchemy import desc
 from schemas.patients import PatientSchema, PatientUpdateSchema
@@ -7,12 +8,14 @@ from models.Patient import Patient
 from database import get_db
 
 router = APIRouter()
+auth_handler = AuthHandler()
 
 
 @app.get(
     "/patients",
     tags=["Patients"])
 def get_patients(
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Return all patients
@@ -29,6 +32,7 @@ def get_patients(
     tags=["Patients"])
 def create_patient(
     patient: PatientSchema,
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Create a patient
@@ -56,6 +60,7 @@ def create_patient(
 def update_patient(
     uuid: str,
     patient_upload: PatientUpdateSchema,
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Update a patient
@@ -84,6 +89,7 @@ def update_patient(
     tags=["Patients"])
 def delete_patient(
     uuid: str,
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Delete a patient

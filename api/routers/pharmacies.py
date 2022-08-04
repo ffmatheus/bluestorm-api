@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from requests import delete
+from auth import AuthHandler
 from sqlalchemy import desc
 from sqlmodel import Session
 from init import app
@@ -7,13 +7,16 @@ from models.Pharmacy import Pharmacy
 from schemas.pharmacies import PharmacySchema, PharmacyUpdateSchema
 from database import get_db
 
+
 router = APIRouter()
+auth_handler = AuthHandler()
 
 
 @app.get(
     "/pharmacies",
     tags=["Pharmacies"])
 def get_pharmacies(
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Return all pharmacies
@@ -30,6 +33,7 @@ def get_pharmacies(
     tags=["Pharmacies"])
 def create_pharmacy(
     pharmacy: PharmacySchema,
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Create a pharmacy
@@ -57,6 +61,7 @@ def create_pharmacy(
 def update_pharmacy(
     uuid: str,
     pharmacy_upload: PharmacyUpdateSchema,
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Update a pharmacy
@@ -85,6 +90,7 @@ def update_pharmacy(
     tags=["Pharmacies"])
 def delete_pharmacy(
     uuid: str,
+    username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Delete a pharmacy
