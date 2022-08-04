@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from api.auth import AuthHandler
 from sqlalchemy import desc
 from sqlmodel import Session
-from api.init import app
+from api.start import app
 from api.models.Pharmacy import Pharmacy
 from api.schemas.pharmacies import PharmacySchema, PharmacyUpdateSchema
 from api.database import get_db

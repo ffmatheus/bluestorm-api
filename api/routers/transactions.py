@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from api.schemas.transactions import TransactionsSchema
 from api.auth import AuthHandler
-from api.init import app
+from api.start import app
 from sqlmodel import Session
 from sqlalchemy import desc
 from api.database import get_db

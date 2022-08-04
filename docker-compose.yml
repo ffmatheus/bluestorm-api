@@ -1,7 +1,9 @@
 version: "3.8"
 services:
-  app:
+  api:
     build: .
-    command: uvicorn api.main::app --host 0.0.0.0
+    command: ["uvicorn", "api.main:app", "--host=0.0.0.0", "--port=8000"]
+    volumes:
+      - ./api:/code/api
     ports:
       - "8000:8000"

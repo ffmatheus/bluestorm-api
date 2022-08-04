@@ -4,7 +4,7 @@ from api.schemas.users import UserSchema
 from api.models.User import User
 from sqlalchemy import desc
 from sqlmodel import Session
-from api.init import app
+from api.start import app
 from api.database import get_db
 
 
@@ -16,7 +16,7 @@ auth_handler = AuthHandler()
     '/register',
     status_code=201,
     tags=["Users"])
-def register(
+def register_user(
     user: UserSchema,
     username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
@@ -57,7 +57,7 @@ def register(
 @app.post(
     "/login",
     tags=["Users"])
-def login_user(
+def login_user_and_get_token(
     user: UserSchema,
     db: Session = Depends(get_db)):
     """

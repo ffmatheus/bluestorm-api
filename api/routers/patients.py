@@ -3,7 +3,7 @@ from api.auth import AuthHandler
 from sqlmodel import Session
 from sqlalchemy import desc
 from api.schemas.patients import PatientSchema, PatientUpdateSchema
-from api.init import app
+from api.start import app
 from api.models.Patient import Patient
 from api.database import get_db
 
