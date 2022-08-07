@@ -1,9 +1,9 @@
 from uuid import UUID
 from sqlalchemy import Column, Integer, Numeric, String, DateTime, ForeignKey
-from database import Base
+from api.database import Base
 from sqlmodel import Table
-from models.Patient import Patient
-from models.Pharmacy import Pharmacy
+from api.models.Patient import Patient
+from api.models.Pharmacy import Pharmacy
 
 
 class Transaction(Base):

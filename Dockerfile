@@ -1,16 +1,16 @@
-FROM python:3.9-slim-buster
+FROM python:3.9
 
+# 
 WORKDIR /code
 
-# TODO: Multstage build, so the container does not runs with a compiler
-RUN apt-get update && apt-get install curl build-essential unixodbc-dev wait-for-it -y
+# 
+COPY ./requirements.txt /code/requirements.txt
 
-COPY ./requirements.txt .
+# 
+RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
-RUN pip install -r requirements.txt
+# 
+COPY ./api /code/api
 
-RUN apt-get remove build-essential -y
-
-COPY ./api /code/
-
-EXPOSE 8000
+# 
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "80"]

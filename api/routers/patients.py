@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
-from auth import AuthHandler
+from api.auth import AuthHandler
 from sqlmodel import Session
-from sqlalchemy import desc
-from schemas.patients import PatientSchema, PatientUpdateSchema
-from start import app
-from models.Patient import Patient
-from database import get_db
+from sqlalchemy import desc, or_
+from api.schemas.patients import PatientSchema, PatientUpdateSchema
+from api.start import app
+from api.models.Patient import Patient
+from api.database import get_db
+from typing import Optional
 
 router = APIRouter()
 auth_handler = AuthHandler()
@@ -15,15 +16,25 @@ auth_handler = AuthHandler()
     "/patients",
     tags=["Patients"])
 def get_patients(
+    search: Optional[str] = None,
     username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Return all patients
     """
-    result = db.query(
-        Patient
-    ).all()
+    if search is None:
+        result = db.query(
+            Patient
+        ).all()
+    else:
+        result = db.query(
+            Patient
+        ).filter(or_(
+                Patient.FIRST_NAME.contains(search),
+                Patient.LAST_NAME.contains(search)
+        )).all()
     return result
+    
 
 
 @app.post(
@@ -54,7 +65,7 @@ def create_patient(
 
 
 @app.patch(
-    "/patient/{UUID}",
+    "/patients/{UUID}",
     status_code=201,
     tags=["Patients"])
 def update_patient(

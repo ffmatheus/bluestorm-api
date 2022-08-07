@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException
-from auth import AuthHandler
-from sqlalchemy import desc
+from api.auth import AuthHandler
+from sqlalchemy import desc, or_
 from sqlmodel import Session
-from start import app
-from models.Pharmacy import Pharmacy
-from schemas.pharmacies import PharmacySchema, PharmacyUpdateSchema
-from database import get_db
+from api.start import app
+from api.models.Pharmacy import Pharmacy
+from api.schemas.pharmacies import PharmacySchema, PharmacyUpdateSchema
+from api.database import get_db
+from typing import Optional
 
 
 router = APIRouter()
@@ -16,14 +17,23 @@ auth_handler = AuthHandler()
     "/pharmacies",
     tags=["Pharmacies"])
 def get_pharmacies(
+    search: Optional[str] = None,
     username=Depends(auth_handler.auth_wrapper),
     db: Session = Depends(get_db)):
     """
     Return all pharmacies
     """
-    result = db.query(
-        Pharmacy
-    ).all()
+    if search is None:
+        result = db.query(
+            Pharmacy
+        ).all()
+    else:
+        result = db.query(
+            Pharmacy
+        ).filter(or_(
+                Pharmacy.NAME.contains(search),
+                Pharmacy.CITY.contains(search)
+        )).all()
     return result
 
 

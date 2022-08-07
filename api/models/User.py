@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String
-from database import Base
+from api.database import Base
 from sqlmodel import Table
 
 
