@@ -59,6 +59,18 @@ class TestApiGet(TestBaseAuth):
         assert response.status_code == 200
         assert len(response.json()) > 20
     
+    def test_read_filtered_patients(self):
+        
+        data = {
+            "search": "LETICIA"
+        }
+        response = client.get(
+            "/patients",
+            headers=TestBaseAuth.headers,
+            json=data)
+        assert response.status_code == 200
+        assert len(response.json()) > 3
+
     def test_read_all_pharmacies(self):
         
         response = client.get(
@@ -66,6 +78,18 @@ class TestApiGet(TestBaseAuth):
             headers=TestBaseAuth.headers)
         assert response.status_code == 200
         assert len(response.json()) > 8
+    
+    def test_read_filtered_pharmacies(self):
+        
+        data = {
+            "search": "DROGA MAIS"
+        }
+        response = client.get(
+            "/pharmacies",
+            headers=TestBaseAuth.headers,
+            json=data)
+        assert response.status_code == 200
+        assert len(response.json()) > 1
     
     def test_read_all_transactions(self):
         
