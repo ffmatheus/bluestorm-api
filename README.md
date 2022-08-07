@@ -1,4 +1,4 @@
-# Bluestorm API 🚀
+# Bluestorm API (FASTAPI) 🚀
 
 # Manage patients and pharmacies transactions data
 
@@ -39,3 +39,8 @@ You will receive a JWT token and can put that on Authorize
 Now you can access all endpoints.
 
 Enjoy ! 
+
+# First look
+
+![First Look](./firstlook.png)
+
